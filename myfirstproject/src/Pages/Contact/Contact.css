@@ -1,0 +1,131 @@
+.contact-container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .map-container {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .contact-info {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contact-info>h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .contact-info > p {
+    padding-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-form h3 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .contact-form .intro-text {
+    text-align: center;
+    color: #777;
+    margin-bottom: 20px;
+  }
+  
+  .form-fields {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .field-group {
+    width: 48%;
+    margin-bottom: 15px;
+  }
+  
+  .field-group-comment {
+    width: 100%;
+  }
+  
+  .contact-form label {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .contact-form textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .checkbox {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+  }
+  
+  .checkbox input {
+    margin-right: 10px;
+  }
+  .error{
+    color: red;
+    margin-bottom: 5px;
+  }
+  .contact-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    font-size: 14px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .contact-btn:hover {
+    background-color: #0056b3;
+  }
+  
+
+  @media (max-width: 768px) {
+    .field-group {
+      width: 100%;
+    }
+  
+    .checkbox {
+      margin-left: 0;
+    }
+  
+    .contact-btn {
+      width: 100%; 
+    }
+  }
+  

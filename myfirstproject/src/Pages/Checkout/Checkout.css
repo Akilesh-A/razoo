@@ -1,0 +1,47 @@
+
+.final-price{
+    font-size: 20px;
+    font-weight: bold;
+}
+.chk-out{
+    padding: 20px;
+}
+.form-contains{
+    padding: 7px 32px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.form-group{
+    padding: 10px;
+}
+.crt-details{
+    padding-left: 26px;
+}
+.crt-details>h3{
+    font-size: 20px;
+   
+}
+.img-fluid{
+    border-radius: 10px;
+}
+.chkout-summary{
+   padding-left: 23px;
+}
+.chkout-summary .chkout-head-summary{
+    line-height: 32px;
+    margin-bottom: 1rem;
+    color: #000000;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+@media (max-width: 767px) {
+    .chkout-summary{
+        padding-top: 25px;
+    }
+    .form-control{
+        padding: 7px;
+    }
+   
+
+}

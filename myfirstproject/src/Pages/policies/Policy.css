@@ -1,0 +1,20 @@
+.title-policy{
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom:40px;
+}
+.policy-sec-wrapper{
+    margin: 60px 0;
+}
+.policy-sub-title{
+    font-size: 20px;
+    font-weight: 700;
+}
+.policy-content{
+    font-size: 16px;
+    margin: 20px 0;
+}
+.policy-sec-wrapper ul{
+    padding-left: 40px;
+}
