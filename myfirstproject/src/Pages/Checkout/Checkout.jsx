@@ -47,7 +47,7 @@ function Checkout() {
     e.preventDefault();
     if (validateForm()) {
       setShowPayment(true);
-      console.log(userDetails);
+     
     }
   };
 
@@ -115,6 +115,7 @@ function Checkout() {
   totalAmount={totalAmount} 
   userDetails={userDetails} 
   cartItems={cartItems || []} 
+  setShowPayment={setShowPayment}
 />   )}
     </div>
   );
