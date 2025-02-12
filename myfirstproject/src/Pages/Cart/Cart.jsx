@@ -87,12 +87,13 @@ const Cart = () => {
   };
 
   return (
-    <div className="cart-container" style={{ position: "relative" }}>
-      {cartItems.length > 0 && (
+<div className={`cart-parent ${cartItems.length>0 ? "cart-bg":''}`}>
+<div className="cart-container">
+      {/* {cartItems.length > 0 && (
         <>
           <img src={flow1} alt="Floral Design" className="floral-decoration-top-left" />
         </>
-      )}
+      )} */}
   
       <h2>Shopping Cart</h2>
   
@@ -176,6 +177,8 @@ const Cart = () => {
       {/* Disclaimer Modal */}
       <DisclaimerModal showModal={showModal} handleClose={handleTermsClose} />
     </div>
+</div>
+
   );
 };
 

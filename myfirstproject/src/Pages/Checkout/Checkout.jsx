@@ -52,12 +52,13 @@ function Checkout() {
   };
 
   return (
-    <div className="container chk-out">
+   <div className="chkout-outer">
+     <div className="container chk-out">
       <h2>Enter Shipping Details</h2>
       {!showPayment ? (
-        <div className="row">
+        <div className="row caart-holder">
           {/* Shipping Details Form */}
-          <div className="col-md-8 form-contains">
+          <div className="col-md-8 form-contains ">
             <form onSubmit={handleSubmit}>
               <div className="row">
                 {Object.keys(userDetails).map((field) => (
@@ -88,10 +89,11 @@ function Checkout() {
 
           {/* Cart Items Display */}
           <div className="col-md-4 chkout-summary">
-            <h3 className="chkout-head-summary">Order Summmary</h3>
+          <div className="summary-content">
+          <h3 className="chkout-head-summary text-center">Order Summary</h3>
             <div className="row ">
               {cartItems.map((item, index) => (
-                <div className="col-12 d-flex align-items-center mb-3" key={index}>
+                <div className=" d-flex align-items-center mb-3 des-details" key={index}>
                   <div className="col-2">
                     <img src={item.image} alt={item.name} className="img-fluid" />
                   </div>
@@ -107,6 +109,7 @@ function Checkout() {
               <hr />
               <div className="col-12 text-center final-price"><p> Total Rs: {totalAmount}</p></div>
             </div>
+          </div>
 
           </div>
         </div>
@@ -118,6 +121,7 @@ function Checkout() {
   setShowPayment={setShowPayment}
 />   )}
     </div>
+   </div>
   );
 }
 
