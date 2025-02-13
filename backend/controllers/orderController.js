@@ -35,6 +35,8 @@ const createRazorpayOrder = async (req, res) => {
 const verifyPaymentAndCreateOrder = async (req, res) => {
   try {
     const { order_id, payment_id, signature, customer, cartItems, totalAmount } = req.body;
+    console.log(customer.mobile+"customer");
+    
     if (!order_id || !payment_id || !signature || cartItems.length === 0) {
       return res.status(400).json({ success: false, message: "Missing required payment fields or cart is empty!" });
     }
@@ -101,7 +103,7 @@ A new order has been placed.
 
 Customer Name: ${customer.name}
 Email: ${customer.email}
-Phone: ${customer.phone}
+Phone: ${customer.mobile}
 
 Order Details:
 ${cartItems.map(item => `${item.name} - ${item.quantity} x ₹${item.price}`).join("\n")}

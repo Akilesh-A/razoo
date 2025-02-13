@@ -85,21 +85,23 @@ const RazorpayPayment = ({
           }
 
           // Step 5: Verify Payment with Backend
-          const paymentResponse = await fetch(
-            "http://localhost:5000/api/order/verify-payment",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                order_id: orderData.order.id,
-                payment_id: response.razorpay_payment_id,
-                signature: response.razorpay_signature,
-                customer: userDetails,
-                cartItems,
-                totalAmount,
-              }),
-            }
-          );
+          const paymentResponse = await fetch("http://localhost:5000/api/order/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              order_id: orderData.order.id,
+              payment_id: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+              customer: {
+                name: userDetails.name,
+                email: userDetails.email,
+                mobile: userDetails.mobile,
+              },
+              cartItems,
+              totalAmount,
+            }),
+          });
+          
 
           const paymentData = await paymentResponse.json();
           console.log("Payment Verification Response:", paymentData);
