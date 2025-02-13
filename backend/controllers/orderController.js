@@ -133,4 +133,82 @@ const getRazorpayKey = (req, res) => {
   res.json({ key: process.env.RAZORPAY_KEY_ID });
 };
 
-module.exports = { createRazorpayOrder, verifyPaymentAndCreateOrder, getRazorpayKey };
+const cancelOrder = async (req, res) => {
+  try {
+    const { orderId, paymentId, email } = req.body;
+    console.log("Cancel Request Received:", { orderId, paymentId, email });
+
+    if (!orderId || !paymentId || !email) {
+      return res.status(400).json({ success: false, message: "Missing order details!" });
+    }
+
+    // Find order in database
+    const order = await Order.findOne({ razorpayOrderId: orderId, razorpayPaymentId: paymentId });
+    console.log("Found Order:", order);
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found!" });
+    }
+
+    if (order.paymentStatus === "Cancelled") {
+      return res.status(400).json({ success: false, message: "Order is already cancelled!" });
+    }
+
+    // Process Refund via Razorpay
+    console.log("Processing refund for:", paymentId);
+    const refund = await razorpay.payments.refund(paymentId, {
+      amount: order.totalAmount * 100, // Convert to paise
+      speed: "normal",
+    });
+
+    console.log("Refund Response:", refund);
+
+    if (!refund || refund.status !== "processed") {
+      return res.status(500).json({ success: false, message: "Refund failed!" });
+    }
+
+    // Update order status
+    order.paymentStatus = "Cancelled";
+    await order.save();
+    console.log("Order status updated to Cancelled");
+
+    // Send email notification
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Order Cancelled - Refund Processed",
+      text: `Dear Customer,
+
+Your order (Order ID: ${orderId}) has been successfully cancelled.
+
+Refund Details:
+Amount: ₹${order.totalAmount}
+Refund Status: Initiated
+
+The amount will be credited within 5-7 business days.
+
+Best regards,
+Akilesh Store`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`Cancellation email sent to ${email}`);
+
+    res.status(200).json({ success: true, message: "Order cancelled and refund processed!" });
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+    res.status(500).json({ success: false, message: "Failed to cancel order.", error: error.message });
+  }
+};
+
+
+
+module.exports = { createRazorpayOrder, verifyPaymentAndCreateOrder, getRazorpayKey,cancelOrder };

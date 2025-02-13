@@ -5,14 +5,16 @@ const OrderConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { paymentId, orderId, totalAmount } = location.state || {};
+  const { payment_id, orderId, totalAmount, email } = location.state || {};
 
-  console.log(paymentId, orderId, totalAmount);
+  console.log("Location State:", location.state); // Debugging log
+  console.log("Extracted Email:", email); // Debugging email field
+  
   
 
  
   
-  if (!paymentId) {
+  if (!orderId) {
     return <h2>No order details found!</h2>;
   }
 
@@ -21,14 +23,17 @@ const OrderConfirmation = () => {
       const response = await fetch("http://localhost:5000/api/order/cancel-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId, paymentId }),
+        body: JSON.stringify({ orderId, paymentId: payment_id, email:email }),
       });
-
+  
       const data = await response.json();
-
+      console.log(data);
+      
+      console.log("Cancel Order Response:", data);
+  
       if (data.success) {
         alert("Order cancelled and refund initiated!");
-        navigate("/cart"); // Redirect back to cart
+        navigate("/cart");
       } else {
         alert("Failed to cancel order. Try again!");
       }
@@ -37,11 +42,12 @@ const OrderConfirmation = () => {
       alert("Something went wrong!");
     }
   };
+  
 
   return (
     <div className="order-confirmation-container text-center">
       <h2>Order Confirmation</h2>
-      <p><strong>Payment ID:</strong> {paymentId}</p>
+      <p><strong>Payment ID:</strong> {payment_id}</p>
       <p><strong>Order ID:</strong> {orderId}</p>
       <p><strong>Total Amount:</strong> Rs. {totalAmount}</p>
 

@@ -95,7 +95,7 @@ const RazorpayPayment = ({
                 payment_id: response.razorpay_payment_id,
                 signature: response.razorpay_signature,
                 customer: userDetails,
-                cartItems: cartItems,
+                cartItems,
                 totalAmount,
               }),
             }
@@ -112,8 +112,10 @@ const RazorpayPayment = ({
                 payment_id: response.razorpay_payment_id,
                 orderId: orderData.order.id,
                 totalAmount,
+                email: userDetails.email,
               },
             });
+            
           } else {
             alert("Payment verification failed!");
           }
