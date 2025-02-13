@@ -18,6 +18,7 @@ import Termsandconditions from "./Pages/terms/Termsandconditions.jsx"
 import Policy from "./Pages/policies/Policy.jsx"
 import Account from "./Pages/account/Account.jsx"
 import Stories from "./Pages/stories/Stories.jsx"
+import OrderConfirmation from "./Pages/OrderConformation/OrderConformation.jsx"
 //Css
 import './App.css'
 function App() {
@@ -51,6 +52,7 @@ function App() {
             <Route path="/Policy" element={<Policy />} />
             <Route path="/Account" element={<Account />} />
             <Route path="/Stories" element={<Stories />} />
+            <Route path="/order-conformation" element={<OrderConfirmation/>} />
           </Routes>
       </main>
       <Footer/>

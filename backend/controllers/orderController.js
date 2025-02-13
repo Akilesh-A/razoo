@@ -13,7 +13,6 @@ const razorpay = new Razorpay({
 const createRazorpayOrder = async (req, res) => {
   try {
     const { amount } = req.body;
-
     if (!amount) {
       return res.status(400).json({ success: false, message: "Amount is required!" });
     }
@@ -27,6 +26,7 @@ const createRazorpayOrder = async (req, res) => {
     const order = await razorpay.orders.create(options);
     res.json({ success: true, order });
   } catch (error) {
+    console.error("Error creating Razorpay order:", error);
     res.status(500).json({ success: false, message: "Error creating Razorpay order", error: error.message });
   }
 };
@@ -35,7 +35,6 @@ const createRazorpayOrder = async (req, res) => {
 const verifyPaymentAndCreateOrder = async (req, res) => {
   try {
     const { order_id, payment_id, signature, customer, cartItems, totalAmount } = req.body;
-
     if (!order_id || !payment_id || !signature || cartItems.length === 0) {
       return res.status(400).json({ success: false, message: "Missing required payment fields or cart is empty!" });
     }
@@ -53,7 +52,7 @@ const verifyPaymentAndCreateOrder = async (req, res) => {
     // Save Order in MongoDB
     const newOrder = new Order({
       customer,
-      cartItems,  
+      cartItems,    
       totalAmount,
       paymentStatus: "Paid",
       razorpayOrderId: order_id,
@@ -76,59 +75,55 @@ const verifyPaymentAndCreateOrder = async (req, res) => {
       from: process.env.EMAIL_USER,
       to: customer.email,
       subject: "Order Confirmation from Akilesh Store",
-      text: `
-        Dear ${customer.name},
+      text: `Dear ${customer.name},
 
-        Your payment was successful, and your order has been placed!
+Your payment was successful, and your order has been placed!
 
-        Order Details:
-        ${cartItems.map(item => `${item.name} - ${item.quantity} x ₹${item.price}`).join("\n")}
+Order Details:
+${cartItems.map(item => `${item.name} - ${item.quantity} x ₹${item.price}`).join("\n")}
 
-        Total Amount Paid: ₹${totalAmount}
+Total Amount Paid: ₹${totalAmount}
 
-        Thank you for shopping with us!
+Thank you for shopping with us!
 
-        Best regards,
-        Akilesh Store
-      `,
+Best regards,
+Akilesh Store`,
     };
 
-    // Email to Store Owner (seelaikaari123@gmail.com)
+    // Email to Store Owner
     const ownerMailOptions = {
       from: process.env.EMAIL_USER,
       to: "krishnamoorthym3009@gmail.com",
       subject: "New Order Received - Akilesh Store",
-      text: `
-        Hello,
+      text: `Hello,
 
-        A new order has been placed.
+A new order has been placed.
 
-        Customer Name: ${customer.name}
-        Email: ${customer.email}
-        Phone: ${customer.phone}
+Customer Name: ${customer.name}
+Email: ${customer.email}
+Phone: ${customer.phone}
 
-        Order Details:
-        ${cartItems.map(item => `${item.name} - ${item.quantity} x ₹${item.price}`).join("\n")}
+Order Details:
+${cartItems.map(item => `${item.name} - ${item.quantity} x ₹${item.price}`).join("\n")}
 
-        Total Amount Paid: ₹${totalAmount}
+Total Amount Paid: ₹${totalAmount}
 
-        Please process the order accordingly.
+Please process the order accordingly.
 
-        Best regards,
-        Akilesh Store
-      `,
+Best regards,
+Akilesh Store`,
     };
 
     // Send emails
     await transporter.sendMail(customerMailOptions);
-    console.log(` Email sent to customer: ${customer.email}`);
+    console.log(`Email sent to customer: ${customer.email}`);
 
     await transporter.sendMail(ownerMailOptions);
-    console.log(" Email sent to store owner: seelaikaari123@gmail.com");
+    console.log("Email sent to store owner: seelaikaari123@gmail.com");
 
     res.status(201).json({ success: true, message: "Order stored, email sent to customer & owner!", order: newOrder });
-
   } catch (error) {
+    console.error("Error during payment verification:", error);
     res.status(500).json({ success: false, message: "Failed to store order.", error: error.message });
   }
 };
@@ -138,5 +133,4 @@ const getRazorpayKey = (req, res) => {
   res.json({ key: process.env.RAZORPAY_KEY_ID });
 };
 
-// Exporting all functions
 module.exports = { createRazorpayOrder, verifyPaymentAndCreateOrder, getRazorpayKey };
