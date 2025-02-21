@@ -172,7 +172,7 @@ function Checkout() {
                       </div>
                       <div className="col-10 crt-details">
                         <h3>{item.name}</h3>
-                        <p>Price: {item.price}</p>
+                        <p>Price: {totalAmount}</p>
                         <p>Quantity: {item.quantity}</p>
                       </div>
                     </div>
